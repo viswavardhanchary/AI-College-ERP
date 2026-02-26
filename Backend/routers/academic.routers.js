@@ -1,12 +1,19 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const controller = require("../controllers/academic.controllers");
+const academicController = require('../controllers/academic.controllers');
 
-router.post("/", controller.createAcademic);
-router.get("/", controller.getAllAcademics);
-router.get("/:id", controller.getAcademicById);
-router.put("/:id", controller.updateAcademic);
-router.patch("/add-year/:id", controller.addYear);
-router.delete("/:id", controller.deleteAcademic);
+router.post('/', academicController.createAcademic);
+router.get('/', academicController.getAllAcademics);
+router.get('/student/:studentId', academicController.getAcademicByStudent);
+router.delete('/:id', academicController.deleteAcademic);
+
+
+router.post('/:id/years', academicController.addYear);
+
+
+router.post('/:id/years/:yearId/subjects', academicController.registerSubject);
+
+
+router.patch('/:id/years/:yearId/subjects/:subjectObjId', academicController.updateAttendance);
 
 module.exports = router;

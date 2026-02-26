@@ -13,6 +13,7 @@ const academicSchema = new mongoose.Schema({
   section: Number,
   years: [
     {
+      year: Number,
       from: String,
       to: String,
       semesters: {
@@ -45,8 +46,13 @@ const academicSchema = new mongoose.Schema({
     }
   ],
 
-  timestamps: true
-});
+  college: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'College'
+  },
+
+  
+},{timestamps: true});
 
 
 module.exports = mongoose.model('academic' , academicSchema);

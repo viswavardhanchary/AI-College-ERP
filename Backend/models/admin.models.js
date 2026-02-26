@@ -14,6 +14,10 @@ const adminSchema = new mongoose.Schema({
   college_email: String,
   personal_email: String,
   phone_number: String,
+  profile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Upload'
+  },
   position: {
     type: String,
     enum: ['placement' , 'office'],
@@ -24,6 +28,10 @@ const adminSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Upload',
   },
+  college: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'College'
+    },
   attendance: [
     {
       date: Date,
@@ -33,6 +41,10 @@ const adminSchema = new mongoose.Schema({
       },
     },
   ],
+  ai_chat: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Aichat'
+  }],
   joining: Date,
   status: {
     type: String,
@@ -51,5 +63,7 @@ const adminSchema = new mongoose.Schema({
   ],
   address_line_1 : String,
   address_line_2 : String,
-  timestamps: true
-});
+  
+},{timestamps: true});
+
+module.exports = mongoose.model('admin' , adminSchema);

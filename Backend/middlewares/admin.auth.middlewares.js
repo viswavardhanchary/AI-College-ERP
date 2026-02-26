@@ -1,49 +1,32 @@
-const jwt = require("jsonwebtoken");
-const Admin = require("../models/admin.models");
+const jwt = require('jsonwebtoken');
+const Admin = require('../models/admin.models');
 
-module.exports = async (req, res, next) => {
-  try {
-    const { token, id } = req.body;
+const protectAdmin = async (req, res, next) => {
+    let token;
 
-    if (!token || !id) {
-      return res.status(401).json({
-        success: false,
-        message: "Token and ID required",
-      });
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+
+
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_fallback_secret');
+
+            req.admin = await Admin.findById(decoded.id).select('-password');
+            
+            if (!req.admin) {
+                return res.status(401).json({ message: 'Not authorized, admin not found' });
+            }
+
+            next();
+        } catch (error) {
+            console.error(error);
+            res.status(401).json({ message: 'Not authorized, token failed' });
+        }
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    if (decoded.id !== id) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid token or ID mismatch",
-      });
+    if (!token) {
+        res.status(401).json({ message: 'Not authorized, no token provided' });
     }
-
-    const admin = await Admin.findById(id);
-
-    if (!admin) {
-      return res.status(404).json({
-        success: false,
-        message: "Admin not found",
-      });
-    }
-
-    if (admin.status !== "active") {
-      return res.status(403).json({
-        success: false,
-        message: "Admin account is not active",
-      });
-    }
-
-    req.user = admin;
-    next();
-
-  } catch (error) {
-    return res.status(401).json({
-      success: false,
-      message: "Unauthorized",
-    });
-  }
 };
+
+module.exports = { protectAdmin };

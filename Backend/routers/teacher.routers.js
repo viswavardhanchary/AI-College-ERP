@@ -1,26 +1,24 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const controller = require("../controllers/teacher.controllers");
-const verify = require('../middlewares/teacher.auth.middlewares');
+const teachersControllers = require('../controllers/teacher.controllers');
+const { protectTeacher } = require('../middlewares/teacher.auth.middlewares');
 
-router.post('/login' , controller.teacherLogin);
+router.post('/', teachersControllers.createTeacher);
+router.get('/', teachersControllers.getAllTeachers);
+router.get('/:id', teachersControllers.getTeacherById);
 
-router.post("/", verify , controller.createTeacher);
-router.post("/bulk", verify , controller.bulkCreateTeachers);
+router.put('/:id', protectTeacher, teachersControllers.updateTeacherProfile);
+router.delete('/:id', protectTeacher, teachersControllers.deleteTeacher);
 
-router.get("/", verify , controller.getAllTeachers);
-router.get("/:id", verify , controller.getTeacherById);
+router.post('/:id/subjects', protectTeacher, teachersControllers.addSubjectHandle);
+router.patch('/:id/subjects/:handleId/dates', protectTeacher, teachersControllers.updateSubjectDates);
 
-router.put("/:id", verify , controller.updateTeacher);
-router.patch("/:id", verify , controller.patchTeacher);
-router.patch("/toggle-status/:id", verify , controller.toggleTeacherStatus);
+router.post('/:id/attendance', protectTeacher, teachersControllers.addAttendanceRecord);
 
-router.patch("/add-subject/:id", verify , controller.addSubjectHandle);
-router.patch("/mark-attendance/:id", verify , controller.markTeacherAttendance);
-router.patch("/add-mentor/:id", verify , controller.addMentorStudents);
-router.patch("/add-salary/:id", verify , controller.addSalaryPayment);
+router.post('/:id/mentor', protectTeacher, teachersControllers.addMentorGroup);
+router.post('/:id/mentor/:mentorId/students', protectTeacher, teachersControllers.addStudentToMentorGroup);
 
-router.patch("/soft-delete/:id", verify , controller.softDeleteTeacher);
-router.delete("/:id", verify , controller.deleteTeacher);
+router.post('/:id/payroll', protectTeacher, teachersControllers.addPayrollEntry);
+router.patch('/:id/payroll/:payId', protectTeacher, teachersControllers.updatePayrollStatus);
 
 module.exports = router;

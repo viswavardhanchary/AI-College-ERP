@@ -10,7 +10,10 @@ const subjectSchema = new mongoose.Schema({
     enum: ['lab' , 'theory' , 'others'],
     default: 'theory',
   },
-  timestamps: true,
-})
+  college: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'College'
+    },
+},{timestamps: true})
 
 module.exports = mongoose.model('subject' , subjectSchema);

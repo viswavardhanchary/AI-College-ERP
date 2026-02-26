@@ -18,12 +18,20 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     enum: ['professor' , 'associate professor' , 'assitant professor' , 'principle' , 'vice principle' , 'lab incharge'],
   },
+  profile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Upload'
+  },
+  college: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'College'
+    },
   room_no: String,
   block: String,
   subjects_handle: [
     {
       branch: String,
-      section: Number,
+      section: String,
       year: Number,
       subject: {
         subject_id : {
@@ -47,6 +55,10 @@ const teacherSchema = new mongoose.Schema({
       },
     },
   ],
+  ai_chat: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Aichat'
+  }],
   mentor_to : [
     {
       branch: String,
@@ -78,5 +90,7 @@ const teacherSchema = new mongoose.Schema({
   ],
   address_line_1 : String,
   address_line_2 : String,
-  timestamps: true
-});
+  
+},{timestamps: true});
+
+module.exports = mongoose.model('teacher' , teacherSchema);

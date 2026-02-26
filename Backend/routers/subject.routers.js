@@ -1,11 +1,13 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const controller = require("../controllers/subject.controllers");
+const subjectsControllers = require('../controllers/subject.controllers');
 
-router.post("/", controller.createSubject);
-router.get("/", controller.getAllSubjects);
-router.get("/:id", controller.getSubjectById);
-router.put("/:id", controller.updateSubject);
-router.delete("/:id", controller.deleteSubject);
+router.post('/', subjectsControllers.createSubject);
+router.get('/', subjectsControllers.getAllSubjects);
+router.get('/:id', subjectsControllers.getSubjectById);
+router.get('/dept/:dept', subjectsControllers.getSubjectsByDept);
+router.get('/college/:collegeId', subjectsControllers.getSubjectsByCollege);
+router.put('/:id', subjectsControllers.updateSubject);
+router.delete('/:id', subjectsControllers.deleteSubject);
 
 module.exports = router;

@@ -9,8 +9,16 @@ const studentSchema = new mongoose.Schema({
   date_of_birth: Date,
   college_mail: String,
   person_mail: String,
-  image: String,
   city: String,
+  batch: Number,
+  profile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Upload'
+  },
+  college: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'College'
+    },
   gender: {
     type: String,
     enum: ['male' , 'female' , 'others']
@@ -43,10 +51,18 @@ const studentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Upload',
   },
+  events_registered: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event'
+  }],
+  ai_chat: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Aichat'
+  }],
   address_line_1 : String,
   address_line_2 : String,
-  timestamps: true
-})
+  
+},{timestamps: true})
 
 
 module.exports = mongoose.model('student' , studentSchema);

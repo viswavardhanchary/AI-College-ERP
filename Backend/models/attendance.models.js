@@ -9,6 +9,10 @@ const attendanceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
   },
+  college: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'College'
+    },
   day_by_day : [{
     date: Date,
     status: {
@@ -16,7 +20,7 @@ const attendanceSchema = new mongoose.Schema({
       enum: ['present' , 'absent'],
     },
   }],
-  timestamps: true
-});
+  
+},{timestamps: true});
 
 module.exports = mongoose.model('Attendance' , attendanceSchema);
